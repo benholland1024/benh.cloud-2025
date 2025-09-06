@@ -4,5 +4,10 @@ export default defineNuxtConfig({
   typescript: {
     typeCheck: true
   },
-  devtools: { enabled: true }
+  devtools: { enabled: true },
+  modules: [
+    '@nuxt/ui', 
+  ],
+  css: ['~/assets/imports.css'],
+  
 })

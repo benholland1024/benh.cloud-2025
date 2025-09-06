@@ -1,0 +1,22 @@
+@import "tailwindcss";
+@import "@nuxt/ui";
+
+@theme {
+  --serif-font: Caprasimo serif;
+
+  --text-color: black;
+  --background-color: white;
+  --bg-translucent: rgba(255,255,255,0.7);
+
+  --blue: #466EA8;
+  --blue2: #4698A8;
+  --brown: #A88846;
+  --orange: #F87600;
+  --gray: #999999;
+  --black: #0D0D0D;
+  --light-black: #1E1E1E;
+
+  --sidebar-width: 240px; 
+  /* font-family: sans-serif; */
+
+}

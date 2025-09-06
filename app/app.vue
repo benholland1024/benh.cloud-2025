@@ -1,43 +1,74 @@
 <template>
+  <UApp>
   <!-- The outer div, containing the whole app. -->
   <div :class="{ 'dark-mode': dark_mode }" style="min-height: 100vh; display:flex;">
+    
     <NuxtRouteAnnouncer />
     <!-- <img src="./assets/misc/moon.png" id="dark-mode-icon" @click="toggle_dark_mode()" /> -->
 
-    <div id="sidebar">
-      <!-- <header>
-        <router-link style="color:white; text-decoration: none;" to="/"><h1>benh.cloud</h1></router-link>
-      </header>
-      <nav id="nav-links">
-        <router-link class="nav-link" to="/"><div class="img" id="about-me-link"></div>{{ $t('about me', 'über mich')}}</router-link>
-        <router-link class="nav-link" to="/portfolio"><div class="img" id="portfolio-link"></div>portfolio</router-link> -->
-        <!-- <router-link class="nav-link" to="/projects"><div class="img" id="projects-link"></div>projects</router-link> -->
-        <!-- <router-link class="nav-link" to="/blog"><div class="img" id="blog-link"></div>blog</router-link>
-      </nav>
-      <select v-model="selected_language" id="lang-select">
-        <option v-for="(lng, i) in Object.keys(languages)" :key="`Lang${i}`" :value="lng">
-          <a v-if="1">
-            {{ languages[lng].nativeName }}
-          </a>
-        </option>
-      </select> -->
-    </div>
+    
+    <UNavigationMenu 
+      :items="items" 
+      orientation="vertical"
+      class="data-[orientation=vertical]:w-xl:bg-gray" 
+      color="neutral"
+      :ui="{
+        linkLabel: 'text-lg',
+        link: 'text-lg w-64 text-white'
+      }"
+    />
 
     <div id="content-container">
       <NuxtPage />
     </div>
 
-    <div id="mobile-navbar">
+    <!-- <div id="mobile-navbar">
       <router-link class="nav-link" to="/"><div class="img" id="about-me-link"></div>{{$t('about', 'über')}}</router-link>
-      <router-link class="nav-link" to="/portfolio"><div class="img" id="portfolio-link"></div>portfolio</router-link>
+      <router-link class="nav-link" to="/portfolio"><div class="img" id="portfolio-link"></div>portfolio</router-link> -->
       <!--<router-link class="nav-link" to="/projects"><div class="img" id="projects-link"></div>projects</router-link>-->
-      <router-link class="nav-link" to="/blog"><div class="img" id="blog-link"></div>blog</router-link>
-    </div>
+      <!-- <router-link class="nav-link" to="/blog"><div class="img" id="blog-link"></div>blog</router-link>
+    </div> -->
 
   </div>
+  </UApp>
 </template>
 
-<script setup>
+<script setup lang="ts">
+const appConfig = useAppConfig()
+
+
+import type { NavigationMenuItem } from '@nuxt/ui'
+
+const items = ref<NavigationMenuItem[]>([
+  {
+    label: 'benh.cloud',
+    to: '/',
+    class: `font-[family-name:var(--serif-font)] 
+      text-white font-bold text-3xl my-4`,
+    ui: {
+      link: `text-white font-bold text-3xl`,
+    },
+    active: false
+  },
+  {
+    label: 'About Me',
+    icon: 'i-ic:outline-face',
+    to: '/',
+  },
+  {
+    label: 'Portfolio',
+    icon: 'i-material-symbols:precision-manufacturing-outline-sharp',
+    to: '/portfolio',
+    children: [
+      {
+        label: 'Startup Stirfry',
+        icon: 'i-lucide-file-text',
+        description: 'A web agency with taste',
+        to: '/portfolio/startup-stirfry'
+      },
+    ]
+  },
+])
 
 const dark_mode = ref(true);
 const selected_language = ref('en');
@@ -46,7 +77,7 @@ const languages = ref({
   de: { nativeName: ' 🇩🇪 Deutsch' },
 })
 
-function $t(en, de) {
+function $t(en: any, de: any) {
   if (selected_language.value == 'en') {
     return en;
   } else { return de; }
@@ -107,7 +138,6 @@ function $t(en, de) {
 /* @import url('./assets/styling/page-content.css'); */
 /*  This file has css classes used in multiple pages.  */
 
-
 /*  Centered column.  */
 .text-center {
     max-width: 600px;
@@ -121,15 +151,6 @@ function $t(en, de) {
 .flex {
     display: flex;
 }
-@media only screen and (max-width: 600px) {
-    .flex {
-      display: block;
-    }
-    .flex div {
-        width: 90% !important;
-        margin: 0 auto;
-    }
-}
 .space-between {
     justify-content: space-between;
 }
@@ -138,9 +159,6 @@ h2, h3, p {
     margin: 0px;
 }
 
-h4 {
-    font-family: sans-serif;
-}
 
 .icon {
     width: 18px;
@@ -184,22 +202,9 @@ h4 {
 /****************** */
 /*    Variables.    */
 /****************** */
-:root {
-  --text-color: black;
-  --background-color: white;
-  --bg-translucent: rgba(255,255,255,0.7);
 
-  --blue: #466EA8;
-  --blue2: #4698A8;
-  --brown: #A88846;
-  --orange: #F87600;
-  --gray: #999999;
-  --black: #0D0D0D;
-  --light-black: #1E1E1E;
-
-  --sidebar-width: 240px; 
-  font-family: sans-serif;
-
+h1 {
+  font-family: Caprasimo, serif;
 }
 :root .dark-mode {
   --text-color: white;
@@ -221,12 +226,6 @@ h4 {
 }
 .gray {
   color: var(--gray);
-}
-
-/*  Must credit!  */
-@font-face {
-  font-family: morallySerif sans-serif;
-  /* src: url(./assets/page_assets/bio/Morally\ Serif.otf); */
 }
 
 /**************** */
@@ -265,9 +264,6 @@ header, #nav-links {
   background: #0D0D0D;
   color: white;
 }
-.dark-mode a:not(.nav-link) {
-  color: var(--blue2);
-}
 
 #tooltip {
     position: absolute;
@@ -280,36 +276,6 @@ header, #nav-links {
     color: white;
     z-index: 100;
     padding: 5px 10px;
-}
-
-/*************************** */
-/*  Menu (sidebar + mobile)  */
-/*************************** */
-
-#sidebar {
-  position: fixed;
-  left: 0px;
-  height: 100vh;
-  width: var(--sidebar-width);
-  background: #ddd;
-  z-index: 2;
-  color: var(--text-color);
-}
-.dark-mode #sidebar {
-  background: #161616;
-}
-h1 {
-  text-align: left;
-  width: 100%;
-  padding-left: 10px;
-  margin-bottom: 0px;
-  box-sizing: border-box;
-  font-family: morallySerif;
-  font-weight: normal;
-  color: black;
-}
-.dark-mode h1 {
-  color: white;
 }
 
 #mobile-navbar {
@@ -346,7 +312,7 @@ h1 {
   padding: 5px;
   border-radius: 5px;
   text-align: left;
-  font-family: sans-serif;
+
   text-decoration: none;
   display: flex;
   align-items: center;
@@ -372,42 +338,11 @@ h1 {
   /* -webkit-mask-image: url(./assets/icons/face.svg);
   mask-image: url(./assets/icons/face.svg); */
 }
-
-#about-me-link {
-  /* -webkit-mask-image: url(./assets/icons/face.svg);
-  mask-image: url(./assets/icons/face.svg); */
-}
-#portfolio-link {
-  /* -webkit-mask-image: url(./assets/icons/machine.svg);
-  mask-image: url(./assets/icons/machine.svg); */
-}
-#projects-link {
-  /* -webkit-mask-image: url(./assets/icons/briefcase.svg);
-  mask-image: url(./assets/icons/briefcase.svg); */
-}
-#blog-link {
-  /* -webkit-mask-image: url(./assets/icons/paragraph.svg);
-  mask-image: url(./assets/icons/paragraph.svg); */
-}
 .dark-mode .nav-link .img {
   background-color: white;
 }
 .nav-link:hover {
   text-decoration: underline;
-}
-.nav-link.selected {
-  font-weight: bold;
-  text-decoration: underline;
-}
-
-nav a.router-link-exact-active {
-  font-weight: bold;
-}
-.dark-mode nav a.router-link-exact-active {
-  background: #222;
-}
-nav a:not(.router-link-exact-active) {
-  font-weight: normal;
 }
 @media only screen and (max-width: 650px) {
   .nav-link {
