@@ -10,15 +10,11 @@
     <UNavigationMenu 
       :items="items" 
       orientation="vertical"
-      class="data-[orientation=vertical]:w-xl:bg-gray" 
+      class="data-[orientation=vertical]:w-xl:bg-gray-800" 
       color="neutral"
-      :ui="{
-        linkLabel: 'text-lg',
-        link: 'text-lg w-64 text-white'
-      }"
     />
 
-    <div id="content-container">
+    <div id="content-container" class="bg-gray-950 w-full">
       <NuxtPage />
     </div>
 
@@ -34,20 +30,16 @@
 </template>
 
 <script setup lang="ts">
-const appConfig = useAppConfig()
-
 
 import type { NavigationMenuItem } from '@nuxt/ui'
+import {ref} from 'vue';
 
 const items = ref<NavigationMenuItem[]>([
   {
     label: 'benh.cloud',
     to: '/',
     class: `font-[family-name:var(--serif-font)] 
-      text-white font-bold text-3xl my-4`,
-    ui: {
-      link: `text-white font-bold text-3xl`,
-    },
+      text-white [&>span]:text-3xl my-4`,
     active: false
   },
   {
@@ -61,10 +53,34 @@ const items = ref<NavigationMenuItem[]>([
     to: '/portfolio',
     children: [
       {
-        label: 'Startup Stirfry',
+        label: 'Data Pantry',
         icon: 'i-lucide-file-text',
-        description: 'A web agency with taste',
-        to: '/portfolio/startup-stirfry'
+        description: 'A database manager',
+        to: '/portfolio/data-pantry'
+      },
+      {
+        label: 'Alber Law Firm',
+        icon: 'i-lucide-file-text',
+        description: 'A law firm\'s website',
+        to: '/portfolio/albert-law'
+      },
+      {
+        label: 'Pulse Duplicator',
+        icon: 'i-lucide-file-text',
+        description: 'A novel pulse duplicator',
+        to: '/portfolio/pulse-duplicator'
+      },
+      {
+        label: 'KHE website',
+        icon: 'i-lucide-file-text',
+        description: 'A hackathon website',
+        to: '/portfolio/khe2019'
+      },
+      {
+        label: 'ktty',
+        icon: 'i-lucide-file-text',
+        description: 'A terminal text editor',
+        to: '/portfolio/ktty'
       },
     ]
   },
@@ -138,72 +154,12 @@ function $t(en: any, de: any) {
 /* @import url('./assets/styling/page-content.css'); */
 /*  This file has css classes used in multiple pages.  */
 
-/*  Centered column.  */
-.text-center {
-    max-width: 600px;
-    margin: auto;
-}
 
-.container-center {
-    max-width: 600px;
-    margin: auto;
-}
-.flex {
-    display: flex;
-}
-.space-between {
-    justify-content: space-between;
-}
-
-h2, h3, p {
-    margin: 0px;
-}
-
-
-.icon {
-    width: 18px;
-    margin-right: 10px;
-}
-.dark-mode .icon {
-    filter: invert();
-}
-
-.centered {
-    text-align: center;
-}
 /* @import url('./assets/styling/css-images.css'); */
 /*  These classes produce visual elements when applied to div's.  */
 
-.divider-line {
-  margin-top: 20px;
-  width: 400px;
-  border-bottom: solid 1px black;
-  margin-left: auto;
-  margin-right: auto;
-}
-.dark-mode .divider-line {
-  border-bottom: solid 1px white;
-}
 
-.ellipsis {
-  margin-top: 40px;
-  margin-bottom: 40px;
-  width: 100px;
-  height: 50px;
-  /* background-image: url(../misc/ellipsis.svg); */
-  background-repeat: no-repeat;
-  margin-left: auto;
-  margin-right: auto;
-}
-.dark-mode .ellipsis {
-  filter: invert();
-}
-
-/****************** */
-/*    Variables.    */
-/****************** */
-
-h1 {
+h4 {
   font-family: Caprasimo, serif;
 }
 :root .dark-mode {
@@ -261,7 +217,7 @@ header, #nav-links {
   filter: invert();
 }
 .dark-mode {
-  background: #0D0D0D;
+  
   color: white;
 }
 
@@ -390,8 +346,6 @@ header, #nav-links {
 /*  Page content container */
 /************************* */
 #content-container {
-  width: 100vw;
-  padding-left: var(--sidebar-width);
   box-sizing: border-box;
   overflow-x: hidden;
 }

@@ -2,9 +2,9 @@
   <!------------------------------>
   <!--    Image and About-Me    -->
   <!------------------------------>
-  <div class="flex justify-around flex-wrap">
-    <div id="shape-container">
-      <img src="../assets/bio/decorated_pfp.png" style="width:100%;"/>
+  <div class="flex justify-around flex-wrap py-32">
+    <div class="w-md">
+      <img src="../assets/bio/decorated_pfp.png"/>
     </div> <!--  End shape container -->
 
     <div id="right-container">
@@ -38,6 +38,7 @@
 
 <script lang="ts" setup>
 
+import {ref} from 'vue';
 const selected_language = ref('en');
 
 function $t(en: any, de: any) {

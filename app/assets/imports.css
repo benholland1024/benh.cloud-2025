@@ -2,7 +2,7 @@
 @import "@nuxt/ui";
 
 @theme {
-  --serif-font: Caprasimo serif;
+  --serif-font: Caprasimo, serif;
 
   --text-color: black;
   --background-color: white;
