@@ -5,8 +5,10 @@
   <UDropdownMenu
     arrow
     :items="colorThemes"
-    class="fixed top-4 right-8 z-10 bg-theme-background"
-    :ui="{ content: 'w-48'}"
+    class="fixed top-4 right-8 z-10 text-theme-text"
+    :ui="{ 
+      content: 'w-48 bg-theme-background-darker-10 text-theme-text'
+    }"
   >
     <UButton icon="i-material-symbols:palette-outline" class="text-theme-text" variant="outline" />
   </UDropdownMenu>
@@ -175,6 +177,20 @@ const items = ref<NavigationMenuItem[]>([
         icon: 'mdi:file-text-outline',
         description: 'A terminal text editor',
         to: '/portfolio/ktty'
+      },
+    ]
+  },
+  {
+    label: 'Experiments',
+    icon: 'i-material-symbols:precision-manufacturing-outline-sharp',
+    to: '/experiments',
+    defaultOpen: true,
+    children: [
+      {
+        label: 'World Map',
+        icon: 'mdi:file-text-outline',
+        description: 'An interactive globe',
+        to: '/experiments/world-map'
       },
     ]
   },

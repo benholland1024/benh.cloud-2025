@@ -8,7 +8,7 @@
     </div> <!--  End shape container -->
 
     <div id="right-container">
-      <h1 class="text-3xl">
+      <h1 class="text-3xl text-theme-secondary">
         about me
       </h1>
       <!-- <img src="../assets/page_assets/bio/slice17.png" style="width:100%"/> -->
