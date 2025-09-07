@@ -11,11 +11,16 @@
   },
   "dependencies": {
     "@nuxt/ui": "^3.3.3",
+    "@vueuse/nuxt": "^13.9.0",
     "nuxt": "^4.1.0",
     "vue": "^3.5.20",
     "vue-router": "^4.5.1"
   },
   "devDependencies": {
+    "@iconify-json/lucide": "^1.2.66",
+    "@iconify-json/material-symbols": "^1.2.34",
+    "@iconify-json/mdi": "^1.2.3",
+    "@types/node": "^24.3.1",
     "typescript": "^5.9.2",
     "vue-tsc": "^3.0.6"
   }
