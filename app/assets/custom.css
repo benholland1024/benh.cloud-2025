@@ -171,3 +171,8 @@
 .fill-theme-color5 {
   fill: var(--color5);
 }
+
+/* Custom animation */
+.spin-very-slow {
+  animation: spin 20s linear infinite;
+}
