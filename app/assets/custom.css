@@ -21,6 +21,9 @@
 
 }
 
+/*************************/
+/***** Dark Themes *******/
+/*************************/
 :root[data-theme="dark"] {
   --background: #1a1a1a;
   --text: #ffffff;
@@ -28,7 +31,30 @@
   --secondary: #64748b;
   --accent: #f59e0b;
 }
-
+:root[data-theme="stars"] {
+  --background: #0b0c10;
+  --text: #c5c6c7;
+  --primary: #fcf966;
+  --secondary: #45a29e;
+  --accent: #1f2833;
+}
+:root[data-theme="diner"] {
+  --background: #17082c;
+  --text: #fff0f5;
+  --primary: #e2d87a;
+  --secondary: #dda0dd;
+  --accent: #2bb7e2;
+}
+:root[data-theme="flower"] {
+  --background: #0c2b0e;
+  --text: #e8f5e9;
+  --primary: #af4c99;
+  --secondary: #81c7bb;
+  --accent: #ca27bd;
+}
+/*************************/
+/***** Light Themes ******/
+/*************************/
 :root[data-theme="light"] {
   --background: #ffffff;
   --text: #1a1a1a;
@@ -36,14 +62,19 @@
   --secondary: #475569;
   --accent: #d97706;
 }
-
-/* Add more themes */
 :root[data-theme="desert"] {
   --background: #fdf6e3;
   --text: #657b83;
   --primary: #b58900;
   --secondary: #93a1a1;
   --accent: #cb4b16;
+}
+:root[data-theme="winter"] {
+  --background: #e0f7fa;
+  --text: #006064;
+  --primary: #00838f;
+  --secondary: #4fb3bf;
+  --accent: #00acc1;
 }
 
 .bg-theme-background {
