@@ -5,10 +5,10 @@
   <UDropdownMenu
     arrow
     :items="colorThemes"
-    class="fixed top-4 right-4 z-10"
+    class="fixed top-4 right-8 z-10 bg-theme-background"
     :ui="{ content: 'w-48'}"
   >
-    <UButton icon="i-material-symbols:palette-outline" color="white" variant="outline" />
+    <UButton icon="i-material-symbols:palette-outline" class="text-theme-text" variant="outline" />
   </UDropdownMenu>
 
   <!-- The outer div, containing the whole app. -->
@@ -22,7 +22,7 @@
         :items="items" 
         orientation="vertical"
         class="bg-theme-background-darker-10 sticky top-0 h-screen" 
-        :ui="{ link: 'px-8' }"
+        :ui="{ link: 'px-8 text-theme-text' }"
         trailing-icon="mdi:chevron-down"
       />
     </div>
