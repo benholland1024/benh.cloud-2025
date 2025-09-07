@@ -217,7 +217,7 @@ const items = ref<NavigationMenuItem[]>([
   {
     label: "Experiments",
     icon: "i-material-symbols:precision-manufacturing-outline-sharp",
-    to: "/experiments",
+    to: "/experiments/world-map",
     defaultOpen: true,
     children: [
       {
