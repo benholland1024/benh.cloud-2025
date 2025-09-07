@@ -30,13 +30,17 @@
   --primary: #3b82f6;
   --secondary: #64748b;
   --accent: #f59e0b;
+  --color4: #27e7d7;
+  --color5: #df33d6;
 }
 :root[data-theme="stars"] {
   --background: #0b0c10;
   --text: #c5c6c7;
   --primary: #fcf966;
   --secondary: #45a29e;
-  --accent: #1f2833;
+  --accent: #9ce3f0;
+  --color4: #fcf6aa;
+  --color5: #dfdc33;
 }
 :root[data-theme="diner"] {
   --background: #17082c;
@@ -44,13 +48,17 @@
   --primary: #e2d87a;
   --secondary: #dda0dd;
   --accent: #2bb7e2;
+  --color4: #27e7d7;
+  --color5: #ebd77d;
 }
 :root[data-theme="flower"] {
   --background: #0c2b0e;
   --text: #e8f5e9;
-  --primary: #af4c99;
+  --primary: #fd8ee5;
   --secondary: #81c7bb;
-  --accent: #ca27bd;
+  --accent: #f18350;
+  --color4: #27e7d7;
+  --color5: #5ceb74;
 }
 /*************************/
 /***** Light Themes ******/
@@ -61,13 +69,17 @@
   --primary: #2563eb;
   --secondary: #475569;
   --accent: #d97706;
+  --color4: #27e7d7;
+  --color5: #df33d6;
 }
 :root[data-theme="desert"] {
   --background: #fdf6e3;
-  --text: #657b83;
+  --text: #463636;
   --primary: #b58900;
-  --secondary: #93a1a1;
-  --accent: #cb4b16;
+  --secondary: #bd4848;
+  --accent: #238f0e;
+  --color4: #6a27e7;
+  --color5: #5a1420;
 }
 :root[data-theme="winter"] {
   --background: #e0f7fa;
@@ -75,9 +87,14 @@
   --primary: #00838f;
   --secondary: #4fb3bf;
   --accent: #00acc1;
+  --color4: #27e7d7;
+  --color5: #33dfdf;
 }
 
 .bg-theme-background {
+  background-color: var(--background) !important;
+}
+.hover\:bg-theme-background:hover {
   background-color: var(--background) !important;
 }
 .bg-theme-background-darker {
@@ -101,12 +118,21 @@
 .bg-theme-background-darker-20 {
   background-color: color-mix(in srgb, var(--background) 80%, black) !important;
 }
+.hover\:bg-theme-background-darker-20:hover {
+  background-color: color-mix(in srgb, var(--background) 80%, black);
+}
+.data-active\:bg-theme-background-darker-20[data-active] {
+  background-color: color-mix(in srgb, var(--background) 80%, black) !important;
+}
 .bg-theme-background-lighter-20 {
   background-color: color-mix(in srgb, var(--background) 80%, white) !important;
 }
 
 .bg-theme-primary {
   background-color: var(--primary) !important;
+}
+.hover\:text-theme-primary:hover {
+  color: var(--primary);
 }
 .bg-theme-secondary {
   background-color: var(--secondary) !important;
@@ -117,6 +143,31 @@
 .text-theme-primary {
   color: var(--primary) !important;
 }
+
+.data-active\:text-theme-primary[data-active] {
+  color: var(--primary) !important;
+}
 .text-theme-secondary {
   color: var(--secondary) !important;
+}
+
+.data-active\:text-bold[data-active] {
+  font-weight: bold !important;
+}
+
+/* SVG Fills */
+.fill-theme-primary {
+  fill: var(--primary);
+}
+.fill-theme-secondary {
+  fill: var(--secondary);
+}
+.fill-theme-accent {
+  fill: var(--accent);
+}
+.fill-theme-color4 {
+  fill: var(--color4);
+}
+.fill-theme-color5 {
+  fill: var(--color5);
 }

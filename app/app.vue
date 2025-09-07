@@ -5,9 +5,12 @@
   <UDropdownMenu
     arrow
     :items="colorThemes"
-    class="fixed top-4 right-8 z-10 text-theme-text"
+    class="fixed top-4 right-16 z-10 text-theme-text"
     :ui="{ 
-      content: 'w-48 bg-theme-background-darker-10 text-theme-text'
+      content: 'w-48 bg-theme-background-darker-10',
+      item: `text-theme-text hover:text-theme-primary hover:bg-theme-background-darker-20
+        transition-colors duration-200`,
+      label: 'text-theme-text'  // Makes labels slightly transparent
     }"
   >
     <UButton icon="i-material-symbols:palette-outline" class="text-theme-text" variant="outline" />
@@ -24,7 +27,12 @@
         :items="items" 
         orientation="vertical"
         class="bg-theme-background-darker-10 sticky top-0 h-screen" 
-        :ui="{ link: 'px-8 text-theme-text' }"
+        :ui="{ 
+          link: `px-8 text-theme-text 
+            hover:bg-theme-background-darker-20 rounded-md
+            data-active:bg-theme-background-darker-20
+            data-active:text-bold data-active:text-theme-primary`,
+        }"
         trailing-icon="mdi:chevron-down"
       />
     </div>
@@ -40,7 +48,10 @@
         orientation="horizontal" 
         class="w-full bg-theme-background-darker-10 flex justify-around" 
         :ui="{
-          link: 'px-8 flex flex-col items-center gap-1',
+          link: `px-8 flex flex-col items-center gap-1 
+            hover:bg-theme-background-darker-20 rounded-md
+            data-active:bg-theme-background-darker-20
+            data-active:text-bold data-active:text-theme-primary`,
           icon: 'mb-1',
           linkTrailing: 'hidden'
         }"
@@ -58,8 +69,8 @@
 //  Datatypes for the navigation menu and dropdown menu.
 import type { NavigationMenuItem, DropdownMenuItem } from '@nuxt/ui'
 
-//  Tool to declare reactive variables.
-import {ref} from 'vue';
+//  Tools from Vue.
+import {ref, onMounted} from 'vue';
 
 //  Responsive design tool - check if we're using mobile.
 import { useMediaQuery } from '@vueuse/core'
@@ -70,10 +81,18 @@ const color_theme = ref('dark');  //  The current color theme.
 //  A function to update the color theme.
 function update_theme(new_theme: string) {
   color_theme.value = new_theme;
-  localStorage.setItem('theme', new_theme); // Optional: persist theme choice
-  console.log("Theme updated to " + new_theme);
+  if (process.client) {
+    localStorage.setItem('theme', new_theme);
+  }
   document.documentElement.setAttribute('data-theme', new_theme);
 }
+// Update the initial theme load to check for client-side
+onMounted(() => {
+  if (process.client) {
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    update_theme(savedTheme);
+  }
+});
 
 // The color themes available in the dropdown menu.
 const colorThemes = ref<DropdownMenuItem[][]>([
@@ -144,7 +163,7 @@ const items = ref<NavigationMenuItem[]>([
   },
   {
     label: 'Portfolio',
-    icon: 'i-material-symbols:precision-manufacturing-outline-sharp',
+    icon: 'mdi:briefcase-outline',
     to: '/portfolio',
     defaultOpen: true,
     children: [
@@ -155,7 +174,7 @@ const items = ref<NavigationMenuItem[]>([
         to: '/portfolio/data-pantry'
       },
       {
-        label: 'Alber Law Firm',
+        label: 'Albert Law Firm',
         icon: 'mdi:file-text-outline',
         description: 'A law firm\'s website',
         to: '/portfolio/albert-law'
@@ -188,7 +207,7 @@ const items = ref<NavigationMenuItem[]>([
     children: [
       {
         label: 'World Map',
-        icon: 'mdi:file-text-outline',
+        icon: 'mdi:globe',
         description: 'An interactive globe',
         to: '/experiments/world-map'
       },

@@ -4,7 +4,7 @@
   <!------------------------------>
   <div class="flex justify-around flex-wrap py-32">
     <div class="w-md">
-      <img src="../assets/bio/decorated_pfp.png"/>
+      <ProfileImage class="w-full h-auto" />
     </div> <!--  End shape container -->
 
     <div id="right-container">
@@ -39,6 +39,8 @@
 <script lang="ts" setup>
 
 import {ref} from 'vue';
+import ProfileImage from '../components/ProfileImage.vue';
+
 const selected_language = ref('en');
 
 function $t(en: any, de: any) {
