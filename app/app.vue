@@ -109,10 +109,10 @@ const colorThemes = ref<DropdownMenuItem[][]>([
       },
     },
     {
-      label: "Stars",
-      icon: "i-lucide-sun-moon",
+      label: "Angler fish",
+      icon: "game-icons:angler-fish",
       onSelect: () => {
-        update_theme("stars");
+        update_theme("angler");
       },
     },
     {
@@ -143,10 +143,10 @@ const colorThemes = ref<DropdownMenuItem[][]>([
       },
     },
     {
-      label: "Desert",
-      icon: "mdi:cactus",
+      label: "Lunch",
+      icon: "material-symbols:lunch-dining",
       onSelect: () => {
-        update_theme("desert");
+        update_theme("lunch");
       },
     },
     {

@@ -27,17 +27,17 @@
 :root[data-theme="dark"] {
   --background: #1a1a1a;
   --text: #ffffff;
-  --primary: #3b82f6;
+  --primary: #7ba8f1;
   --secondary: #64748b;
   --accent: #f59e0b;
   --color4: #27e7d7;
-  --color5: #df33d6;
+  --color5: #d48fd1;
 }
-:root[data-theme="stars"] {
+:root[data-theme="angler"] {
   --background: #0b0c10;
   --text: #c5c6c7;
   --primary: #fcf966;
-  --secondary: #45a29e;
+  --secondary: #7ec5c2;
   --accent: #9ce3f0;
   --color4: #fcf6aa;
   --color5: #dfdc33;
@@ -72,7 +72,7 @@
   --color4: #27e7d7;
   --color5: #df33d6;
 }
-:root[data-theme="desert"] {
+:root[data-theme="lunch"] {
   --background: #fdf6e3;
   --text: #463636;
   --primary: #b58900;
