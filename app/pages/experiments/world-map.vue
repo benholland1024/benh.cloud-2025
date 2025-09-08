@@ -1,5 +1,6 @@
 <template>
   <div class="h-screen w-full bg-gray-900">
+    <div class="absolute right-4 bottom-4 text-theme-text z-10">Made using Globe.gl</div>
     <ClientOnly>
       <div id="globe-container" ref="globeContainer" class="w-full h-full relative">
         <div
