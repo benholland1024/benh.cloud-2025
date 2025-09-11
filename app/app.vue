@@ -22,7 +22,7 @@
     </UDropdownMenu>
 
     <!-- The outer div, containing the whole app. -->
-    <div class="min-h-screen flex bg-theme-background text-theme-text">
+    <div class="min-h-screen max-w-screen flex bg-theme-background text-theme-text">
       <NuxtRouteAnnouncer />
       <!--  This describes the route for screen readers.  -->
 
@@ -42,7 +42,7 @@
         />
       </div>
 
-      <main class="bg-theme-background text-theme-text w-full box-border">
+      <main class="bg-theme-background text-theme-text box-border flex-1 flex">
         <NuxtPage />
       </main>
 

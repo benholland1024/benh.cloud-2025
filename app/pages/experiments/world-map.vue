@@ -4,13 +4,17 @@
     <ClientOnly>
       <div
         v-if="hoveredCountry"
-        class="absolute left-4 top-4 bg-white bg-opacity-80 p-2 rounded shadow text-black z-20"
+        :style="{
+          left: mousePosition ? `${mousePosition.x + 20}px` : '20px',
+          top: mousePosition ? `${mousePosition.y + 20}px` : '20px'
+        }"
+        class="absolute bg-white bg-opacity-80 p-2 rounded shadow text-black z-20"
       >
         <div>
           <strong>{{ hoveredCountry.name }}</strong>
         </div>
         <div v-if="hoveredCountry.gdp">
-          GDP: ${{ hoveredCountry.gdp.toLocaleString() }}
+          GDP: {{ formatGDP(hoveredCountry.gdp) }}
         </div>
         <div v-else>No GDP data</div>
       </div>
@@ -40,6 +44,7 @@ const globeContainer = ref<HTMLElement | null>(null);
 const isLoaded = ref(false);
 const loadingStatus = ref("Initializing globe...");
 const hoveredCountry = ref<{ name: string; gdp: number | null } | null>(null);
+const mousePosition = ref<{ x: number; y: number } | null>(null);
 
 const hexPolygonColorFn = (feat: Feature | object): string => {
   if (!("properties" in feat)) return "#444444";
@@ -66,6 +71,24 @@ function handlePolygonHover(polygon: object | null, prevPolygon: object | null) 
   }
 }
 
+const formatGDP = (gdp: number) => {
+  if (!gdp || gdp === 0) return 'No GDP data';
+  
+  const trillion = 1e12;
+  const billion = 1e9;
+  const million = 1e6;
+  
+  if (gdp >= trillion) {
+    return `$${(gdp / trillion).toFixed(1)} trillion`;
+  } else if (gdp >= billion) {
+    return `$${(gdp / billion).toFixed(1)} billion`;
+  } else if (gdp >= million) {
+    return `$${(gdp / million).toFixed(1)} million`;
+  } else {
+    return `$${gdp.toLocaleString()}`;
+  }
+};
+
 onMounted(async () => {
   try {
     await nextTick();
@@ -89,14 +112,27 @@ onMounted(async () => {
       res.json()
     )) as FeatureCollection<Geometry>;
 
+    let start_width = globeContainer.value.offsetWidth;
+    let start_height = globeContainer.value.offsetHeight;
+
     loadingStatus.value = "Creating globe instance...";
     const globe = new Globe(globeContainer.value)
       .backgroundColor("#111827")
-      .width(globeContainer.value.offsetWidth)
-      .height(globeContainer.value.offsetHeight);
+      .width(start_width)
+      .height(start_height);
+
+    // Constrain all Globe.js elements
+    //  TODO:  Find a better solution. This creates issues w/ ascpect ratio.
+    const allElements = globeContainer.value.querySelectorAll('*');
+    allElements.forEach(element => {
+      const el = element as HTMLElement;
+      el.style.maxWidth = '100%';
+      el.style.maxHeight = '100%';
+      el.style.boxSizing = 'border-box';
+    });
 
     await new Promise<void>((resolve) => {
-      globe.globeImageUrl("//unpkg.com/three-globe/example/img/earth-dark.jpg");
+      globe.globeImageUrl("/world-map/earth-dark.jpg");
       globe.onGlobeReady(() => {
         resolve();
       });
@@ -121,6 +157,16 @@ onMounted(async () => {
       globe
         .width(globeContainer.value.offsetWidth)
         .height(globeContainer.value.offsetHeight);
+    });
+
+    window.addEventListener('mousemove', (event) => {
+      if (globeContainer.value) {
+        const rect = globeContainer.value.getBoundingClientRect();
+        mousePosition.value = {
+          x: event.clientX - rect.left,
+          y: event.clientY - rect.top
+        };
+      }
     });
   } catch (error) {
     console.error("Error creating globe:", error);
