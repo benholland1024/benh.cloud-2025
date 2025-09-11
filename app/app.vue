@@ -9,7 +9,6 @@
         content: 'w-48 bg-theme-background-darker-10',
         item: `text-theme-text hover:text-theme-primary hover:bg-theme-background-darker-20
         transition-colors duration-200`,
-        label: 'text-theme-text', // Makes labels slightly transparent
       }"
       size="xl"
     >
@@ -19,6 +18,20 @@
         size="xl"
         variant="outline"
       />
+      <!-- Custom item template -->
+      <template #item="{ item }">
+        <div 
+          :class="[
+            'flex items-left gap-2 w-full',
+            item.value === color_theme 
+              ? 'text-theme-primary font-bold' 
+              : 'text-theme-text'
+          ]"
+        >
+          <UIcon :name="item.icon" class="text-2xl" v-if="item.icon" />
+          {{ item.label }}
+        </div>
+      </template>
     </UDropdownMenu>
 
     <!-- The outer div, containing the whole app. -->
@@ -72,7 +85,7 @@ import type { NavigationMenuItem } from "@nuxt/ui";
 
 //  Import color scheme stuff
 import useColorScheme from "~/composables/useColorScheme";
-const { colorThemes, update_theme } = useColorScheme();
+const { colorThemes, update_theme, color_theme } = useColorScheme();
 
 //  Tools from Vue.
 import { ref, onMounted } from "vue";

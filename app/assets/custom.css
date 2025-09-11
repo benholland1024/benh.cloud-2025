@@ -137,6 +137,13 @@
 .bg-theme-secondary {
   background-color: var(--secondary) !important;
 }
+.bg-theme-text {
+  background-color: var(--text) !important;
+}
+
+.text-theme-background {
+  color: var(--background) !important;
+}
 .text-theme-text {
   color: var(--text) !important;
 }

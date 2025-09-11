@@ -35,7 +35,6 @@ const interpolateColor = (color1: string, color2: string, factor: number) => {
   return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
 };
 
-console.log(interpolateColor('#ff0000', '#0000ff', 0.5)); // Should print a purple color
 
 const getColorSchemeHexColor = (colorName: string) => {
   return getComputedStyle(document.documentElement).getPropertyValue(`--${colorName}`).trim()
@@ -51,6 +50,7 @@ const colorThemes = ref<DropdownMenuItem[][]>([
     {
       label: "Dark",
       icon: "i-lucide-moon",
+      value: "dark",
       onSelect: () => {
         update_theme("dark");
       },
@@ -58,6 +58,7 @@ const colorThemes = ref<DropdownMenuItem[][]>([
     {
       label: "Angler fish",
       icon: "game-icons:angler-fish",
+      value: "angler",
       onSelect: () => {
         update_theme("angler");
       },
@@ -65,6 +66,7 @@ const colorThemes = ref<DropdownMenuItem[][]>([
     {
       label: "All-Night Diner",
       icon: "i-solar:moon-stars-bold",
+      value: "diner",
       onSelect: () => {
         update_theme("diner");
       },
@@ -72,6 +74,7 @@ const colorThemes = ref<DropdownMenuItem[][]>([
     {
       label: "Hot House Flower",
       icon: "game-icons:vine-flower",
+      value: "flower",
       onSelect: () => {
         update_theme("flower");
       },
@@ -85,6 +88,7 @@ const colorThemes = ref<DropdownMenuItem[][]>([
     {
       label: "Light",
       icon: "i-lucide-sun",
+      value: "light",
       onSelect: () => {
         update_theme("light");
       },
@@ -92,6 +96,7 @@ const colorThemes = ref<DropdownMenuItem[][]>([
     {
       label: "Lunch",
       icon: "material-symbols:lunch-dining",
+      value: "lunch",
       onSelect: () => {
         update_theme("lunch");
       },
@@ -99,6 +104,7 @@ const colorThemes = ref<DropdownMenuItem[][]>([
     {
       label: "Winter",
       icon: "i-lucide-snowflake",
+      value: "winter",
       onSelect: () => {
         update_theme("winter");
       },
