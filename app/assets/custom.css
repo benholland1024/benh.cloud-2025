@@ -91,6 +91,7 @@
   --color5: #33dfdf;
 }
 
+/* Background Colors */
 .bg-theme-background {
   background-color: var(--background) !important;
 }
@@ -127,12 +128,8 @@
 .bg-theme-background-lighter-20 {
   background-color: color-mix(in srgb, var(--background) 80%, white) !important;
 }
-
 .bg-theme-primary {
   background-color: var(--primary) !important;
-}
-.hover\:text-theme-primary:hover {
-  color: var(--primary);
 }
 .bg-theme-secondary {
   background-color: var(--secondary) !important;
@@ -141,14 +138,26 @@
   background-color: var(--text) !important;
 }
 
+/* Text Colors */
 .text-theme-background {
   color: var(--background) !important;
+}
+.hover\:text-theme-primary:hover {
+  color: var(--primary);
 }
 .text-theme-text {
   color: var(--text) !important;
 }
 .text-theme-primary {
   color: var(--primary) !important;
+}
+
+/* Borders */
+.border-theme-text {
+  border-color: var(--text) !important;
+}
+.border-theme-background {
+  border-color: var(--background) !important;
 }
 
 .data-active\:text-theme-primary[data-active] {

@@ -13,12 +13,24 @@
       </div>
     </div>
 
-    <div class="hidden absolute top-4 left-4 text-white z-10 text-sm bg-black/50 rounded p-2">
-      Display:
-      <select class="bg-black">
-        <option value="gdp">GDP</option>
-        <option value="population">Population</option>
-      </select>
+    <div class="absolute top-4 left-4 text-theme-text z-10 text-sm bg-theme-background-darker-10 
+      rounded p-2"
+    >
+      <div>
+        Display:
+        <select class="bg-theme-background-darker">
+          <option value="gdp">GDP</option>
+          <option value="population">Population (coming soon)</option>
+        </select>
+      </div>
+      <div class="flex items-center gap-2">
+        High color:
+        <theme-color-picker v-model="highColor" :disabled="lowColor"/>
+      </div>
+      <div class="flex items-center gap-2">
+        Low color:
+        <theme-color-picker v-model="lowColor" :disabled="highColor" />
+      </div>
     </div>
      
 
@@ -62,6 +74,7 @@
 <script setup lang="ts">
 import { ref, onMounted, nextTick, watch } from "vue";
 import type { Feature, FeatureCollection, Geometry } from "geojson";
+import ThemeColorPicker from "~/components/ThemeColorPicker.vue";
 
 //  Import color scheme stuff
 import useColorScheme from "~/composables/useColorScheme";
@@ -72,6 +85,9 @@ const isLoaded = ref(false);
 const loadingStatus = ref("Initializing globe...");
 const hoveredCountry = ref<{ name: string; gdp: number | null } | null>(null);
 const mousePosition = ref<{ x: number; y: number } | null>(null);
+
+const highColor = ref<string>('primary');
+const lowColor = ref<string>('secondary');
 
 let hexPolygonColorFn: (feat: Feature | object) => string = () => "#444444";
 
@@ -88,9 +104,10 @@ const getPolygonColor = function() {
     const maxLog = Math.log(maxGDP);  
     let factor = (normalizedGDP - minLog) / (maxLog - minLog);
     factor = Math.max(0, Math.min(1, factor)); // Clamp between 0 and 1
-    const primary = getColorSchemeHexColor('primary');  //  Get hex code for primary color
-    const secondary = getColorSchemeHexColor('secondary');    //  get hex code for secondary color :)
-    return interpolateColor(primary, secondary, factor);
+    factor = factor * factor; // Square it to make it approach 0 faster
+    const lowColorHex = getColorSchemeHexColor(lowColor.value);    //  :)
+    const highColorHex = getColorSchemeHexColor(highColor.value);  
+    return interpolateColor(lowColorHex, highColorHex, factor);
     // `hsl(200, 100%, ${60 * normalized * normalized}%)`;
   };
 }
@@ -221,6 +238,10 @@ onMounted(async () => {
         getPolygonColor()
         globe.polygonCapColor(hexPolygonColorFn)
       }
+    });
+    watch([highColor, lowColor], () => {
+      getPolygonColor()
+      globe.polygonCapColor(hexPolygonColorFn)
     });
   } catch (error) {
     console.error("Error creating globe:", error);
