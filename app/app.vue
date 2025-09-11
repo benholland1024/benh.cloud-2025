@@ -42,7 +42,7 @@
         />
       </div>
 
-      <main class="bg-theme-background text-theme-text box-border flex-1 flex">
+      <main class="bg-theme-background text-theme-text box-border flex-1">
         <NuxtPage />
       </main>
 
@@ -68,7 +68,11 @@
 
 <script setup lang="ts">
 //  Datatypes for the navigation menu and dropdown menu.
-import type { NavigationMenuItem, DropdownMenuItem } from "@nuxt/ui";
+import type { NavigationMenuItem } from "@nuxt/ui";
+
+//  Import color scheme stuff
+import useColorScheme from "~/composables/useColorScheme";
+const { colorThemes, update_theme } = useColorScheme();
 
 //  Tools from Vue.
 import { ref, onMounted } from "vue";
@@ -77,15 +81,7 @@ import { ref, onMounted } from "vue";
 import { useMediaQuery } from "@vueuse/core";
 const isMobile = useMediaQuery("(max-width: 767px)"); // md breakpoint is 768px
 
-const color_theme = ref("dark"); //  The current color theme.
-//  A function to update the color theme.
-function update_theme(new_theme: string) {
-  color_theme.value = new_theme;
-  if (process.client) {
-    localStorage.setItem("theme", new_theme);
-  }
-  document.documentElement.setAttribute("data-theme", new_theme);
-}
+
 // Update the initial theme load to check for client-side
 onMounted(() => {
   if (process.client) {
@@ -94,70 +90,6 @@ onMounted(() => {
   }
 });
 
-// The color themes available in the dropdown menu.
-const colorThemes = ref<DropdownMenuItem[][]>([
-  [
-    {
-      label: "Dark Themes",
-      type: "label",
-    },
-    {
-      label: "Dark",
-      icon: "i-lucide-moon",
-      onSelect: () => {
-        update_theme("dark");
-      },
-    },
-    {
-      label: "Angler fish",
-      icon: "game-icons:angler-fish",
-      onSelect: () => {
-        update_theme("angler");
-      },
-    },
-    {
-      label: "All-Night Diner",
-      icon: "i-solar:moon-stars-bold",
-      onSelect: () => {
-        update_theme("diner");
-      },
-    },
-    {
-      label: "Hot House Flower",
-      icon: "game-icons:vine-flower",
-      onSelect: () => {
-        update_theme("flower");
-      },
-    },
-  ],
-  [
-    {
-      label: "Light Themes",
-      type: "label",
-    },
-    {
-      label: "Light",
-      icon: "i-lucide-sun",
-      onSelect: () => {
-        update_theme("light");
-      },
-    },
-    {
-      label: "Lunch",
-      icon: "material-symbols:lunch-dining",
-      onSelect: () => {
-        update_theme("lunch");
-      },
-    },
-    {
-      label: "Winter",
-      icon: "i-lucide-snowflake",
-      onSelect: () => {
-        update_theme("winter");
-      },
-    },
-  ],
-]);
 
 //  The items in the navigation menu.
 const items = ref<NavigationMenuItem[]>([

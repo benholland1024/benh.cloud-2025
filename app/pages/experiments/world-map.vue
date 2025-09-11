@@ -1,6 +1,28 @@
 <template>
   <div class="h-screen w-full bg-gray-900 relative">
-    <div class="absolute right-4 bottom-4 text-theme-text z-10">Made using Globe.gl</div>
+
+    <!-- Attribution, lower right corner  -->
+    <div class="absolute right-4 bottom-4 text-theme-text z-10">
+      <div>Made using Globe.gl</div>
+      Data from <a href="https://www.naturalearthdata.com/" target="_blank" class="underline">Natural Earth</a>
+      <div>
+        and 
+        <a href="https://www.kaggle.com/datasets/nelgiriyewithana/countries-of-the-world-2023" 
+          target="_blank" class="underline"
+        >Kaggle</a>
+      </div>
+    </div>
+
+    <div class="hidden absolute top-4 left-4 text-white z-10 text-sm bg-black/50 rounded p-2">
+      Display:
+      <select class="bg-black">
+        <option value="gdp">GDP</option>
+        <option value="population">Population</option>
+      </select>
+    </div>
+     
+
+    <!--  The canvas + tooltip  -->
     <ClientOnly>
       <div
         v-if="hoveredCountry"
@@ -8,7 +30,8 @@
           left: mousePosition ? `${mousePosition.x + 20}px` : '20px',
           top: mousePosition ? `${mousePosition.y + 20}px` : '20px'
         }"
-        class="absolute bg-white bg-opacity-80 p-2 rounded shadow text-black z-20"
+        class="absolute bg-theme-background-lighter-10 bg-opacity-80 p-2 rounded 
+          shadow-lg text-theme-text z-20"
       >
         <div>
           <strong>{{ hoveredCountry.name }}</strong>
@@ -37,8 +60,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, nextTick } from "vue";
+import { ref, onMounted, nextTick, watch } from "vue";
 import type { Feature, FeatureCollection, Geometry } from "geojson";
+
+//  Import color scheme stuff
+import useColorScheme from "~/composables/useColorScheme";
+const { color_theme, getColorSchemeHexColor, interpolateColor } = useColorScheme();
 
 const globeContainer = ref<HTMLElement | null>(null);
 const isLoaded = ref(false);
@@ -46,14 +73,28 @@ const loadingStatus = ref("Initializing globe...");
 const hoveredCountry = ref<{ name: string; gdp: number | null } | null>(null);
 const mousePosition = ref<{ x: number; y: number } | null>(null);
 
-const hexPolygonColorFn = (feat: Feature | object): string => {
-  if (!("properties" in feat)) return "#444444";
-  const properties = (feat as Feature).properties;
-  const gdp = properties?.GDP_MD_EST;
-  if (typeof gdp !== "number") return "#444444";
-  const normalized = Math.log(gdp) / Math.log(22427700000000); // Normalize based on max GDP (USA ~22.4T);
-  return `hsl(200, 100%, ${60 * normalized * normalized}%)`;
-};
+let hexPolygonColorFn: (feat: Feature | object) => string = () => "#444444";
+
+const getPolygonColor = function() {
+  hexPolygonColorFn = (feat: Feature | object): string => {
+    if (!("properties" in feat)) return "#444444";
+    const properties = (feat as Feature).properties;
+    const gdp = properties?.GDP_MD_EST;
+    if (typeof gdp !== "number") return "#444444";
+    const minGDP = 47271463;        // Tuvalu's GDP
+    const maxGDP = 21427700000000;  // USA's GDP
+    const normalizedGDP = Math.log(gdp);
+    const minLog = Math.log(minGDP);
+    const maxLog = Math.log(maxGDP);  
+    let factor = (normalizedGDP - minLog) / (maxLog - minLog);
+    factor = Math.max(0, Math.min(1, factor)); // Clamp between 0 and 1
+    const primary = getColorSchemeHexColor('primary');  //  Get hex code for primary color
+    const secondary = getColorSchemeHexColor('secondary');    //  get hex code for secondary color :)
+    return interpolateColor(primary, secondary, factor);
+    // `hsl(200, 100%, ${60 * normalized * normalized}%)`;
+  };
+}
+getPolygonColor();
 
 function handlePolygonHover(polygon: object | null, prevPolygon: object | null) {
   if (polygon && "properties" in polygon) {
@@ -114,12 +155,14 @@ onMounted(async () => {
 
     let start_width = globeContainer.value.offsetWidth;
     let start_height = globeContainer.value.offsetHeight;
+    let bgColor = getComputedStyle(document.documentElement).getPropertyValue('--background').trim();
 
     loadingStatus.value = "Creating globe instance...";
     const globe = new Globe(globeContainer.value)
-      .backgroundColor("#111827")
+      .backgroundColor(bgColor)
       .width(start_width)
-      .height(start_height);
+      .height(start_height)
+      
 
     // Constrain all Globe.js elements
     //  TODO:  Find a better solution. This creates issues w/ ascpect ratio.
@@ -132,7 +175,8 @@ onMounted(async () => {
     });
 
     await new Promise<void>((resolve) => {
-      globe.globeImageUrl("/world-map/earth-dark.jpg");
+      // globe.backgroundImageUrl("/world-map/night-sky.png");
+      globe.globeImageUrl("/world-map/earth-night.jpg");
       globe.onGlobeReady(() => {
         resolve();
       });
@@ -166,6 +210,16 @@ onMounted(async () => {
           x: event.clientX - rect.left,
           y: event.clientY - rect.top
         };
+      }
+    });
+
+    watch(color_theme, () => {
+      if (globeContainer.value) {
+        const bgColor = getColorSchemeHexColor('background');
+        globeContainer.value.style.backgroundColor = bgColor;
+        globe.backgroundColor(bgColor)
+        getPolygonColor()
+        globe.polygonCapColor(hexPolygonColorFn)
       }
     });
   } catch (error) {
