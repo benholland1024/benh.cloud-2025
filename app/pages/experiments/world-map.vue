@@ -16,21 +16,39 @@
     <div class="absolute top-4 left-4 text-theme-text z-10 text-sm bg-theme-background-darker-10 
       rounded p-2"
     >
-      <div>
-        Display:
-        <select class="bg-theme-background-darker">
-          <option value="gdp">GDP</option>
-          <option value="population">Population (coming soon)</option>
-        </select>
-      </div>
-      <div class="flex items-center gap-2">
-        High color:
-        <theme-color-picker v-model="highColor" :disabled="lowColor"/>
-      </div>
-      <div class="flex items-center gap-2">
-        Low color:
-        <theme-color-picker v-model="lowColor" :disabled="highColor" />
-      </div>
+      <UCollapsible class="flex flex-col gap-2 w-48">
+        <UButton
+          class="group background-theme-background-darker-10 text-theme-text"
+          label="Settings"
+          trailing-icon="i-lucide-chevron-down"
+          :ui="{
+            trailingIcon: 'group-data-[state=open]:rotate-180 transition-transform duration-200'
+          }"
+          block
+        />
+
+        <template #content>
+          <div>
+            Display:
+            <select class="bg-theme-background-darker">
+              <option value="gdp">GDP</option>
+              <option value="population">Population (coming soon)</option>
+            </select>
+          </div>
+          <div class="flex items-center gap-2">
+            High color:
+            <theme-color-picker v-model="highColor" :disabled="lowColor"/>
+          </div>
+          <div class="flex items-center gap-2">
+            Low color:
+            <theme-color-picker v-model="lowColor" :disabled="highColor" />
+          </div>
+          <div class="flex gap-2">
+            Stars in background <USwitch v-model="stars" />
+          </div>
+        </template>
+      </UCollapsible>
+      
     </div>
      
 
@@ -88,6 +106,8 @@ const mousePosition = ref<{ x: number; y: number } | null>(null);
 
 const highColor = ref<string>('primary');
 const lowColor = ref<string>('secondary');
+
+const stars = ref<boolean>(false);
 
 let hexPolygonColorFn: (feat: Feature | object) => string = () => "#444444";
 
@@ -242,6 +262,13 @@ onMounted(async () => {
     watch([highColor, lowColor], () => {
       getPolygonColor()
       globe.polygonCapColor(hexPolygonColorFn)
+    });
+    watch(stars, () => {
+      if (stars.value) {
+        globe.backgroundImageUrl("/world-map/night-sky.png");
+      } else {
+        globe.backgroundImageUrl(null)
+      }
     });
   } catch (error) {
     console.error("Error creating globe:", error);
